@@ -172,7 +172,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      completed_booking_count: { Args: { _user_id: string }; Returns: number }
+      my_completed_booking_count: { Args: never; Returns: number }
     }
     Enums: {
       [_ in never]: never
