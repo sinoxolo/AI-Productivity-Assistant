@@ -14,13 +14,165 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      booking_items: {
+        Row: {
+          booking_id: string
+          created_at: string
+          id: string
+          kind: string
+          name: string
+          qty: number
+          service_id: string | null
+          unit_price: number
+        }
+        Insert: {
+          booking_id: string
+          created_at?: string
+          id?: string
+          kind?: string
+          name: string
+          qty?: number
+          service_id?: string | null
+          unit_price?: number
+        }
+        Update: {
+          booking_id?: string
+          created_at?: string
+          id?: string
+          kind?: string
+          name?: string
+          qty?: number
+          service_id?: string | null
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_items_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "booking_items_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bookings: {
+        Row: {
+          appointment_at: string
+          cancellation_fee: number
+          cancelled_at: string | null
+          created_at: string
+          discount: number
+          id: string
+          notes: string | null
+          status: string
+          subtotal: number
+          total: number
+          user_id: string
+        }
+        Insert: {
+          appointment_at: string
+          cancellation_fee?: number
+          cancelled_at?: string | null
+          created_at?: string
+          discount?: number
+          id?: string
+          notes?: string | null
+          status?: string
+          subtotal?: number
+          total?: number
+          user_id: string
+        }
+        Update: {
+          appointment_at?: string
+          cancellation_fee?: number
+          cancelled_at?: string | null
+          created_at?: string
+          discount?: number
+          id?: string
+          notes?: string | null
+          status?: string
+          subtotal?: number
+          total?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          category: string
+          description: string | null
+          duration_min: number
+          id: string
+          is_active: boolean
+          kind: string
+          name: string
+          name_xh: string | null
+          price: number
+          slug: string
+          sort_order: number
+        }
+        Insert: {
+          category: string
+          description?: string | null
+          duration_min?: number
+          id?: string
+          is_active?: boolean
+          kind?: string
+          name: string
+          name_xh?: string | null
+          price?: number
+          slug: string
+          sort_order?: number
+        }
+        Update: {
+          category?: string
+          description?: string | null
+          duration_min?: number
+          id?: string
+          is_active?: boolean
+          kind?: string
+          name?: string
+          name_xh?: string | null
+          price?: number
+          slug?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      completed_booking_count: { Args: { _user_id: string }; Returns: number }
     }
     Enums: {
       [_ in never]: never
