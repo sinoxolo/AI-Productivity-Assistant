@@ -1,7 +1,8 @@
-import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
 export type CartItem = {
   id: string;
+  serviceId: string | null;
   name: string;
   price: number;
   qty: number;
@@ -18,12 +19,26 @@ type CartCtx = {
 };
 
 const CartContext = createContext<CartCtx | null>(null);
+const STORAGE_KEY = "bb-cart";
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
-  const value = useMemo<CartCtx>(() => {
-    return {
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (raw) setItems(JSON.parse(raw) as CartItem[]);
+    } catch {
+      /* ignore corrupt cart */
+    }
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  }, [items]);
+
+  const value = useMemo<CartCtx>(
+    () => ({
       items,
       add: (item, qty = 1) =>
         setItems((prev) => {
@@ -37,8 +52,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
       clear: () => setItems([]),
       count: items.reduce((n, i) => n + i.qty, 0),
       total: items.reduce((n, i) => n + i.qty * i.price, 0),
-    };
-  }, [items]);
+    }),
+    [items],
+  );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
