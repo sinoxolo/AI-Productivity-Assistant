@@ -22,7 +22,7 @@ export const Route = createFileRoute("/auth")({
       { property: "og:description", content: "Book appointments and track your loyalty rewards." },
     ],
   }),
-  component: AuthPage;
+  component: AuthPage,
 });
 
 function AuthPage() {
