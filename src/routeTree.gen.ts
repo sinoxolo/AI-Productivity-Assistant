@@ -10,33 +10,128 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdvertisingRouteImport } from './routes/advertising'
+import { Route as CollaborationsRouteImport } from './routes/collaborations'
+import { Route as FoodOrderingRouteImport } from './routes/food-ordering'
+import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as PartnerShopsRouteImport } from './routes/partner-shops'
+import { Route as PoliciesRouteImport } from './routes/policies'
+import { Route as ServicesRouteImport } from './routes/services'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdvertisingRoute = AdvertisingRouteImport.update({
+  id: '/advertising',
+  path: '/advertising',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CollaborationsRoute = CollaborationsRouteImport.update({
+  id: '/collaborations',
+  path: '/collaborations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FoodOrderingRoute = FoodOrderingRouteImport.update({
+  id: '/food-ordering',
+  path: '/food-ordering',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartnerShopsRoute = PartnerShopsRouteImport.update({
+  id: '/partner-shops',
+  path: '/partner-shops',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliciesRoute = PoliciesRouteImport.update({
+  id: '/policies',
+  path: '/policies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/advertising': typeof AdvertisingRoute
+  '/collaborations': typeof CollaborationsRoute
+  '/food-ordering': typeof FoodOrderingRoute
+  '/gallery': typeof GalleryRoute
+  '/partner-shops': typeof PartnerShopsRoute
+  '/policies': typeof PoliciesRoute
+  '/services': typeof ServicesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/advertising': typeof AdvertisingRoute
+  '/collaborations': typeof CollaborationsRoute
+  '/food-ordering': typeof FoodOrderingRoute
+  '/gallery': typeof GalleryRoute
+  '/partner-shops': typeof PartnerShopsRoute
+  '/policies': typeof PoliciesRoute
+  '/services': typeof ServicesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/advertising': typeof AdvertisingRoute
+  '/collaborations': typeof CollaborationsRoute
+  '/food-ordering': typeof FoodOrderingRoute
+  '/gallery': typeof GalleryRoute
+  '/partner-shops': typeof PartnerShopsRoute
+  '/policies': typeof PoliciesRoute
+  '/services': typeof ServicesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/advertising'
+    | '/collaborations'
+    | '/food-ordering'
+    | '/gallery'
+    | '/partner-shops'
+    | '/policies'
+    | '/services'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/advertising'
+    | '/collaborations'
+    | '/food-ordering'
+    | '/gallery'
+    | '/partner-shops'
+    | '/policies'
+    | '/services'
+  id:
+    | '__root__'
+    | '/'
+    | '/advertising'
+    | '/collaborations'
+    | '/food-ordering'
+    | '/gallery'
+    | '/partner-shops'
+    | '/policies'
+    | '/services'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdvertisingRoute: typeof AdvertisingRoute
+  CollaborationsRoute: typeof CollaborationsRoute
+  FoodOrderingRoute: typeof FoodOrderingRoute
+  GalleryRoute: typeof GalleryRoute
+  PartnerShopsRoute: typeof PartnerShopsRoute
+  PoliciesRoute: typeof PoliciesRoute
+  ServicesRoute: typeof ServicesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +143,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/advertising': {
+      id: '/advertising'
+      path: '/advertising'
+      fullPath: '/advertising'
+      preLoaderRoute: typeof AdvertisingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/collaborations': {
+      id: '/collaborations'
+      path: '/collaborations'
+      fullPath: '/collaborations'
+      preLoaderRoute: typeof CollaborationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/food-ordering': {
+      id: '/food-ordering'
+      path: '/food-ordering'
+      fullPath: '/food-ordering'
+      preLoaderRoute: typeof FoodOrderingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partner-shops': {
+      id: '/partner-shops'
+      path: '/partner-shops'
+      fullPath: '/partner-shops'
+      preLoaderRoute: typeof PartnerShopsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/policies': {
+      id: '/policies'
+      path: '/policies'
+      fullPath: '/policies'
+      preLoaderRoute: typeof PoliciesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdvertisingRoute: AdvertisingRoute,
+  CollaborationsRoute: CollaborationsRoute,
+  FoodOrderingRoute: FoodOrderingRoute,
+  GalleryRoute: GalleryRoute,
+  PartnerShopsRoute: PartnerShopsRoute,
+  PoliciesRoute: PoliciesRoute,
+  ServicesRoute: ServicesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
