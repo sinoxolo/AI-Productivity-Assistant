@@ -1,25 +1,45 @@
-import { Search, ShoppingBag } from "lucide-react";
-import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { CalendarDays, LogOut, Search, UserRound } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { CartSheet } from "@/components/CartSheet";
 import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { useCart } from "@/lib/cart";
+import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 
 export function TopBar() {
   const { t, lang, setLang } = useI18n();
-  const { count } = useCart();
   const [query, setQuery] = useState("");
+  const [signedIn, setSignedIn] = useState(false);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSignedIn(Boolean(data.session)));
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSignedIn(Boolean(session));
+    });
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
+  const signOut = async () => {
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    await supabase.auth.signOut();
+    toast.success("Signed out");
+    navigate({ to: "/auth", replace: true });
+  };
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-2 border-b border-border bg-background/85 px-3 backdrop-blur md:px-6">
       <SidebarTrigger />
 
       <form
-        className="relative flex-1 max-w-xl"
+        className="relative max-w-md flex-1"
         onSubmit={(e) => {
           e.preventDefault();
           toast(query ? `Searching "${query}"` : t("search.placeholder"));
@@ -57,13 +77,26 @@ export function TopBar() {
           ))}
         </div>
 
-        <Button variant="outline" className="relative" aria-label={t("cart.label")}>
-          <ShoppingBag className="h-4 w-4" />
-          <span className="hidden sm:inline">{t("cart.label")}</span>
-          {count > 0 && (
-            <Badge className="absolute -right-2 -top-2 h-5 min-w-5 justify-center px-1">{count}</Badge>
-          )}
-        </Button>
+        <CartSheet />
+
+        {signedIn ? (
+          <>
+            <Button asChild variant="ghost" size="icon" aria-label="My bookings">
+              <Link to="/bookings">
+                <CalendarDays className="h-4 w-4" />
+              </Link>
+            </Button>
+            <Button variant="ghost" size="icon" onClick={signOut} aria-label="Sign out">
+              <LogOut className="h-4 w-4" />
+            </Button>
+          </>
+        ) : (
+          <Button asChild variant="ghost" size="icon" aria-label="Sign in">
+            <Link to="/auth">
+              <UserRound className="h-4 w-4" />
+            </Link>
+          </Button>
+        )}
       </div>
     </header>
   );
