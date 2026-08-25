@@ -10,22 +10,34 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AdvertisingRouteImport } from './routes/advertising'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CollaborationsRouteImport } from './routes/collaborations'
 import { Route as FoodOrderingRouteImport } from './routes/food-ordering'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as PartnerShopsRouteImport } from './routes/partner-shops'
 import { Route as PoliciesRouteImport } from './routes/policies'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as AuthenticatedBookingsRouteImport } from './routes/_authenticated/bookings'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdvertisingRoute = AdvertisingRouteImport.update({
   id: '/advertising',
   path: '/advertising',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CollaborationsRoute = CollaborationsRouteImport.update({
@@ -58,74 +70,95 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedBookingsRoute = AuthenticatedBookingsRouteImport.update({
+  id: '/bookings',
+  path: '/bookings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/advertising': typeof AdvertisingRoute
+  '/auth': typeof AuthRoute
   '/collaborations': typeof CollaborationsRoute
   '/food-ordering': typeof FoodOrderingRoute
   '/gallery': typeof GalleryRoute
   '/partner-shops': typeof PartnerShopsRoute
   '/policies': typeof PoliciesRoute
   '/services': typeof ServicesRoute
+  '/bookings': typeof AuthenticatedBookingsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/advertising': typeof AdvertisingRoute
+  '/auth': typeof AuthRoute
   '/collaborations': typeof CollaborationsRoute
   '/food-ordering': typeof FoodOrderingRoute
   '/gallery': typeof GalleryRoute
   '/partner-shops': typeof PartnerShopsRoute
   '/policies': typeof PoliciesRoute
   '/services': typeof ServicesRoute
+  '/bookings': typeof AuthenticatedBookingsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/advertising': typeof AdvertisingRoute
+  '/auth': typeof AuthRoute
   '/collaborations': typeof CollaborationsRoute
   '/food-ordering': typeof FoodOrderingRoute
   '/gallery': typeof GalleryRoute
   '/partner-shops': typeof PartnerShopsRoute
   '/policies': typeof PoliciesRoute
   '/services': typeof ServicesRoute
+  '/_authenticated/bookings': typeof AuthenticatedBookingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/advertising'
+    | '/auth'
     | '/collaborations'
     | '/food-ordering'
     | '/gallery'
     | '/partner-shops'
     | '/policies'
     | '/services'
+    | '/bookings'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/advertising'
+    | '/auth'
     | '/collaborations'
     | '/food-ordering'
     | '/gallery'
     | '/partner-shops'
     | '/policies'
     | '/services'
+    | '/bookings'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/advertising'
+    | '/auth'
     | '/collaborations'
     | '/food-ordering'
     | '/gallery'
     | '/partner-shops'
     | '/policies'
     | '/services'
+    | '/_authenticated/bookings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AdvertisingRoute: typeof AdvertisingRoute
+  AuthRoute: typeof AuthRoute
   CollaborationsRoute: typeof CollaborationsRoute
   FoodOrderingRoute: typeof FoodOrderingRoute
   GalleryRoute: typeof GalleryRoute
@@ -143,11 +176,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/advertising': {
       id: '/advertising'
       path: '/advertising'
       fullPath: '/advertising'
       preLoaderRoute: typeof AdvertisingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/collaborations': {
@@ -192,12 +239,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/bookings': {
+      id: '/_authenticated/bookings'
+      path: '/bookings'
+      fullPath: '/bookings'
+      preLoaderRoute: typeof AuthenticatedBookingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedBookingsRoute: typeof AuthenticatedBookingsRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedBookingsRoute: AuthenticatedBookingsRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AdvertisingRoute: AdvertisingRoute,
+  AuthRoute: AuthRoute,
   CollaborationsRoute: CollaborationsRoute,
   FoodOrderingRoute: FoodOrderingRoute,
   GalleryRoute: GalleryRoute,
