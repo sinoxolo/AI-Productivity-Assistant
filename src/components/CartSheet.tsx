@@ -141,6 +141,20 @@ export function CartSheet() {
                   />
                 </div>
               </div>
+              {hasFood && (
+                <div className="space-y-2">
+                  <Label htmlFor="cart-food-time">Food delivery time</Label>
+                  <Input
+                    id="cart-food-time"
+                    type="time"
+                    value={foodTime}
+                    onChange={(e) => setFoodTime(e.target.value)}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    The salon places your food order so it arrives at this time.
+                  </p>
+                </div>
+              )}
               <div className="space-y-2">
                 <Label htmlFor="cart-notes">Notes for the salon</Label>
                 <Textarea
