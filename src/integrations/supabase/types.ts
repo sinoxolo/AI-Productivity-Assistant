@@ -104,6 +104,48 @@ export type Database = {
         }
         Relationships: []
       }
+      collab_enquiries: {
+        Row: {
+          brand_name: string
+          contact_name: string
+          created_at: string
+          email: string
+          id: string
+          package: string
+          phone: string | null
+          platforms: string[]
+          requirements: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          brand_name: string
+          contact_name: string
+          created_at?: string
+          email: string
+          id?: string
+          package: string
+          phone?: string | null
+          platforms?: string[]
+          requirements?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          brand_name?: string
+          contact_name?: string
+          created_at?: string
+          email?: string
+          id?: string
+          package?: string
+          phone?: string | null
+          platforms?: string[]
+          requirements?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string

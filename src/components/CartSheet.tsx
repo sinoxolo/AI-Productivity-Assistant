@@ -32,6 +32,8 @@ export function CartSheet() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("10:00");
   const [notes, setNotes] = useState("");
+  const [foodTime, setFoodTime] = useState("12:00");
+  const hasFood = items.some((i) => i.kind === "food");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const book = useServerFn(createBooking);
@@ -44,10 +46,13 @@ export function CartSheet() {
         navigate({ to: "/auth" });
         throw new Error("Please sign in to complete your booking.");
       }
+      const fullNotes = hasFood
+        ? `${notes ? `${notes}\n` : ""}Food delivery time: ${foodTime}`
+        : notes;
       return book({
         data: {
           appointmentAt: new Date(`${date}T${time}`).toISOString(),
-          notes: notes || undefined,
+          notes: fullNotes || undefined,
           items: items.map((i) => ({
             serviceId: i.serviceId,
             name: i.name,
@@ -136,6 +141,20 @@ export function CartSheet() {
                   />
                 </div>
               </div>
+              {hasFood && (
+                <div className="space-y-2">
+                  <Label htmlFor="cart-food-time">Food delivery time</Label>
+                  <Input
+                    id="cart-food-time"
+                    type="time"
+                    value={foodTime}
+                    onChange={(e) => setFoodTime(e.target.value)}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    The salon places your food order so it arrives at this time.
+                  </p>
+                </div>
+              )}
               <div className="space-y-2">
                 <Label htmlFor="cart-notes">Notes for the salon</Label>
                 <Textarea
