@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      ad_bookings: {
+        Row: {
+          business_name: string
+          contact_name: string
+          created_at: string
+          daily_rate: number
+          days: number
+          details: string | null
+          email: string
+          end_date: string
+          id: string
+          phone: string | null
+          start_date: string
+          status: string
+          total: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          business_name: string
+          contact_name: string
+          created_at?: string
+          daily_rate?: number
+          days?: number
+          details?: string | null
+          email: string
+          end_date: string
+          id?: string
+          phone?: string | null
+          start_date: string
+          status?: string
+          total?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          business_name?: string
+          contact_name?: string
+          created_at?: string
+          daily_rate?: number
+          days?: number
+          details?: string | null
+          email?: string
+          end_date?: string
+          id?: string
+          phone?: string | null
+          start_date?: string
+          status?: string
+          total?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       booking_items: {
         Row: {
           booking_id: string
@@ -71,6 +125,7 @@ export type Database = {
           discount: number
           id: string
           notes: string | null
+          payment_method: string
           status: string
           subtotal: number
           total: number
@@ -84,6 +139,7 @@ export type Database = {
           discount?: number
           id?: string
           notes?: string | null
+          payment_method?: string
           status?: string
           subtotal?: number
           total?: number
@@ -97,6 +153,7 @@ export type Database = {
           discount?: number
           id?: string
           notes?: string | null
+          payment_method?: string
           status?: string
           subtotal?: number
           total?: number
