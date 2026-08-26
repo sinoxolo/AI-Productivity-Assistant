@@ -44,7 +44,7 @@ function Page() {
         </p>
       </header>
 
-      <Tabs defaultValue={FOOD_PARTNERS[0].slug}>
+      <Tabs defaultValue={FOOD_PARTNERS[0]!.slug}>
         <TabsList className="flex h-auto flex-wrap justify-start">
           {FOOD_PARTNERS.map((p) => (
             <TabsTrigger key={p.slug} value={p.slug}>
