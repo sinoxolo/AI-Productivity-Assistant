@@ -19,7 +19,14 @@ import {
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
-import { createBooking } from "@/lib/booking.functions";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { createBooking, getLoyalty, PAYMENT_METHODS } from "@/lib/booking.functions";
 import { useCart } from "@/lib/cart";
 import { useI18n } from "@/lib/i18n";
 
