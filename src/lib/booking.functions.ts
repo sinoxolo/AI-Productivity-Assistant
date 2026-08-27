@@ -135,7 +135,7 @@ export const listMyBookings = createServerFn({ method: "GET" })
     const { data, error } = await context.supabase
       .from("bookings")
       .select(
-        "id, appointment_at, status, subtotal, discount, cancellation_fee, total, notes, booking_items(id, name, kind, unit_price, qty)",
+        "id, appointment_at, status, subtotal, discount, cancellation_fee, total, notes, payment_method, booking_items(id, name, kind, unit_price, qty)",
       )
       .order("appointment_at", { ascending: false });
     if (error) throw new Error(error.message);
