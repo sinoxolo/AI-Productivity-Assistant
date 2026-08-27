@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { ShoppingBag, Trash2 } from "lucide-react";
@@ -40,10 +40,21 @@ export function CartSheet() {
   const [time, setTime] = useState("10:00");
   const [notes, setNotes] = useState("");
   const [foodTime, setFoodTime] = useState("12:00");
+  const [paymentMethod, setPaymentMethod] = useState<string>("card");
   const hasFood = items.some((i) => i.kind === "food");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const book = useServerFn(createBooking);
+  const loyaltyFn = useServerFn(getLoyalty);
+
+  const { data: loyalty } = useQuery({
+    queryKey: ["loyalty"],
+    queryFn: () => loyaltyFn(),
+    retry: false,
+    enabled: open,
+  });
+
+  const discount = loyalty?.qualifies ? Math.round(total * loyalty.rate * 100) / 100 : 0;
 
   const checkout = useMutation({
     mutationFn: async () => {
