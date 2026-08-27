@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { ShoppingBag, Trash2 } from "lucide-react";
@@ -19,7 +19,14 @@ import {
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
-import { createBooking } from "@/lib/booking.functions";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { createBooking, getLoyalty, PAYMENT_METHODS } from "@/lib/booking.functions";
 import { useCart } from "@/lib/cart";
 import { useI18n } from "@/lib/i18n";
 
@@ -33,10 +40,21 @@ export function CartSheet() {
   const [time, setTime] = useState("10:00");
   const [notes, setNotes] = useState("");
   const [foodTime, setFoodTime] = useState("12:00");
+  const [paymentMethod, setPaymentMethod] = useState<string>("card");
   const hasFood = items.some((i) => i.kind === "food");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const book = useServerFn(createBooking);
+  const loyaltyFn = useServerFn(getLoyalty);
+
+  const { data: loyalty } = useQuery({
+    queryKey: ["loyalty"],
+    queryFn: () => loyaltyFn(),
+    retry: false,
+    enabled: open,
+  });
+
+  const discount = loyalty?.qualifies ? Math.round(total * loyalty.rate * 100) / 100 : 0;
 
   const checkout = useMutation({
     mutationFn: async () => {
@@ -53,6 +71,7 @@ export function CartSheet() {
         data: {
           appointmentAt: new Date(`${date}T${time}`).toISOString(),
           notes: fullNotes || undefined,
+          paymentMethod: paymentMethod as "card" | "eft" | "payflex" | "payjustnow" | "cash",
           items: items.map((i) => ({
             serviceId: i.serviceId,
             name: i.name,
@@ -165,6 +184,26 @@ export function CartSheet() {
                   placeholder="Anything we should know?"
                 />
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="cart-payment">Payment method</Label>
+                <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+                  <SelectTrigger id="cart-payment">
+                    <SelectValue placeholder="Choose how you'll pay" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PAYMENT_METHODS.map((m) => (
+                      <SelectItem key={m.id} value={m.id}>
+                        {m.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  Card payments accept all South African banks. PayFlex and PayJustNow split your
+                  total into interest-free instalments.
+                </p>
+              </div>
+
               <p className="text-xs text-muted-foreground">
                 Mon–Fri 09:00–18:00, Sat 09:00–17:00. Closed Sundays and public holidays.
                 Cancellations allowed up to 24 hours before your slot (20% fee).
@@ -174,9 +213,25 @@ export function CartSheet() {
         </div>
 
         <div className="mt-4 space-y-3 border-t border-border p-4">
-          <div className="flex items-center justify-between text-sm font-semibold">
+          <div className="flex items-center justify-between text-sm">
             <span>Subtotal</span>
             <span>{rand(total)}</span>
+          </div>
+          {loyalty && !loyalty.qualifies && items.length > 0 && (
+            <p className="text-xs text-muted-foreground">
+              {loyalty.completed}/{loyalty.threshold} completed bookings —{" "}
+              {loyalty.threshold - loyalty.completed} more for 10% off.
+            </p>
+          )}
+          {discount > 0 && (
+            <div className="flex items-center justify-between text-sm text-primary">
+              <span>Loyalty discount (10%)</span>
+              <span>-{rand(discount)}</span>
+            </div>
+          )}
+          <div className="flex items-center justify-between text-sm font-semibold">
+            <span>Total</span>
+            <span>{rand(Math.max(total - discount, 0))}</span>
           </div>
           <Button
             className="w-full"

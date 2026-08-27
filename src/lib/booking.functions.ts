@@ -18,9 +18,18 @@ const cartItemSchema = z.object({
   qty: z.number().int().min(1).max(20),
 });
 
+export const PAYMENT_METHODS = [
+  { id: "card", label: "Card (all South African banks)" },
+  { id: "eft", label: "Instant EFT / bank transfer" },
+  { id: "payflex", label: "PayFlex — 4 interest-free instalments" },
+  { id: "payjustnow", label: "PayJustNow — 3 interest-free instalments" },
+  { id: "cash", label: "Cash at the salon" },
+] as const;
+
 const createBookingSchema = z.object({
   appointmentAt: z.string().min(1),
   notes: z.string().max(500).optional(),
+  paymentMethod: z.enum(["card", "eft", "payflex", "payjustnow", "cash"]).default("card"),
   items: z.array(cartItemSchema).min(1),
 });
 
@@ -99,6 +108,7 @@ export const createBooking = createServerFn({ method: "POST" })
         discount,
         total,
         notes: data.notes ?? null,
+        payment_method: data.paymentMethod,
       })
       .select("id")
       .single();
@@ -125,7 +135,7 @@ export const listMyBookings = createServerFn({ method: "GET" })
     const { data, error } = await context.supabase
       .from("bookings")
       .select(
-        "id, appointment_at, status, subtotal, discount, cancellation_fee, total, notes, booking_items(id, name, kind, unit_price, qty)",
+        "id, appointment_at, status, subtotal, discount, cancellation_fee, total, notes, payment_method, booking_items(id, name, kind, unit_price, qty)",
       )
       .order("appointment_at", { ascending: false });
     if (error) throw new Error(error.message);
