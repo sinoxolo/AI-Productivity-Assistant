@@ -71,6 +71,7 @@ export function CartSheet() {
         data: {
           appointmentAt: new Date(`${date}T${time}`).toISOString(),
           notes: fullNotes || undefined,
+          paymentMethod: paymentMethod as "card" | "eft" | "payflex" | "payjustnow" | "cash",
           items: items.map((i) => ({
             serviceId: i.serviceId,
             name: i.name,
@@ -183,6 +184,26 @@ export function CartSheet() {
                   placeholder="Anything we should know?"
                 />
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="cart-payment">Payment method</Label>
+                <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+                  <SelectTrigger id="cart-payment">
+                    <SelectValue placeholder="Choose how you'll pay" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PAYMENT_METHODS.map((m) => (
+                      <SelectItem key={m.id} value={m.id}>
+                        {m.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  Card payments accept all South African banks. PayFlex and PayJustNow split your
+                  total into interest-free instalments.
+                </p>
+              </div>
+
               <p className="text-xs text-muted-foreground">
                 Mon–Fri 09:00–18:00, Sat 09:00–17:00. Closed Sundays and public holidays.
                 Cancellations allowed up to 24 hours before your slot (20% fee).
@@ -192,9 +213,25 @@ export function CartSheet() {
         </div>
 
         <div className="mt-4 space-y-3 border-t border-border p-4">
-          <div className="flex items-center justify-between text-sm font-semibold">
+          <div className="flex items-center justify-between text-sm">
             <span>Subtotal</span>
             <span>{rand(total)}</span>
+          </div>
+          {loyalty && !loyalty.qualifies && items.length > 0 && (
+            <p className="text-xs text-muted-foreground">
+              {loyalty.completed}/{loyalty.threshold} completed bookings —{" "}
+              {loyalty.threshold - loyalty.completed} more for 10% off.
+            </p>
+          )}
+          {discount > 0 && (
+            <div className="flex items-center justify-between text-sm text-primary">
+              <span>Loyalty discount (10%)</span>
+              <span>-{rand(discount)}</span>
+            </div>
+          )}
+          <div className="flex items-center justify-between text-sm font-semibold">
+            <span>Total</span>
+            <span>{rand(Math.max(total - discount, 0))}</span>
           </div>
           <Button
             className="w-full"
