@@ -42,6 +42,9 @@ const dict = {
     "policies.sub": "Cancellations, late arrivals and fees.",
     "gallery.title": "Gallery",
     "gallery.sub": "Real photos from the salon.",
+    "nav.competitions": "Competitions",
+    "competitions.title": "Competitions",
+    "competitions.sub": "Enter our giveaway and see who else is in.",
   },
   xh: {
     "nav.home": "Ikhaya",

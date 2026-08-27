@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AdvertisingRouteImport } from './routes/advertising'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CollaborationsRouteImport } from './routes/collaborations'
+import { Route as CompetitionsRouteImport } from './routes/competitions'
 import { Route as FoodOrderingRouteImport } from './routes/food-ordering'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as PartnerShopsRouteImport } from './routes/partner-shops'
@@ -43,6 +44,11 @@ const AuthRoute = AuthRouteImport.update({
 const CollaborationsRoute = CollaborationsRouteImport.update({
   id: '/collaborations',
   path: '/collaborations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompetitionsRoute = CompetitionsRouteImport.update({
+  id: '/competitions',
+  path: '/competitions',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FoodOrderingRoute = FoodOrderingRouteImport.update({
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/advertising': typeof AdvertisingRoute
   '/auth': typeof AuthRoute
   '/collaborations': typeof CollaborationsRoute
+  '/competitions': typeof CompetitionsRoute
   '/food-ordering': typeof FoodOrderingRoute
   '/gallery': typeof GalleryRoute
   '/partner-shops': typeof PartnerShopsRoute
@@ -93,6 +100,7 @@ export interface FileRoutesByTo {
   '/advertising': typeof AdvertisingRoute
   '/auth': typeof AuthRoute
   '/collaborations': typeof CollaborationsRoute
+  '/competitions': typeof CompetitionsRoute
   '/food-ordering': typeof FoodOrderingRoute
   '/gallery': typeof GalleryRoute
   '/partner-shops': typeof PartnerShopsRoute
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   '/advertising': typeof AdvertisingRoute
   '/auth': typeof AuthRoute
   '/collaborations': typeof CollaborationsRoute
+  '/competitions': typeof CompetitionsRoute
   '/food-ordering': typeof FoodOrderingRoute
   '/gallery': typeof GalleryRoute
   '/partner-shops': typeof PartnerShopsRoute
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/advertising'
     | '/auth'
     | '/collaborations'
+    | '/competitions'
     | '/food-ordering'
     | '/gallery'
     | '/partner-shops'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/advertising'
     | '/auth'
     | '/collaborations'
+    | '/competitions'
     | '/food-ordering'
     | '/gallery'
     | '/partner-shops'
@@ -146,6 +157,7 @@ export interface FileRouteTypes {
     | '/advertising'
     | '/auth'
     | '/collaborations'
+    | '/competitions'
     | '/food-ordering'
     | '/gallery'
     | '/partner-shops'
@@ -160,6 +172,7 @@ export interface RootRouteChildren {
   AdvertisingRoute: typeof AdvertisingRoute
   AuthRoute: typeof AuthRoute
   CollaborationsRoute: typeof CollaborationsRoute
+  CompetitionsRoute: typeof CompetitionsRoute
   FoodOrderingRoute: typeof FoodOrderingRoute
   GalleryRoute: typeof GalleryRoute
   PartnerShopsRoute: typeof PartnerShopsRoute
@@ -202,6 +215,13 @@ declare module '@tanstack/react-router' {
       path: '/collaborations'
       fullPath: '/collaborations'
       preLoaderRoute: typeof CollaborationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/competitions': {
+      id: '/competitions'
+      path: '/competitions'
+      fullPath: '/competitions'
+      preLoaderRoute: typeof CompetitionsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/food-ordering': {
@@ -266,6 +286,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdvertisingRoute: AdvertisingRoute,
   AuthRoute: AuthRoute,
   CollaborationsRoute: CollaborationsRoute,
+  CompetitionsRoute: CompetitionsRoute,
   FoodOrderingRoute: FoodOrderingRoute,
   GalleryRoute: GalleryRoute,
   PartnerShopsRoute: PartnerShopsRoute,
