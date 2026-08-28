@@ -8,6 +8,7 @@ import {
   Store,
   ScrollText,
   Images,
+  Trophy,
   Phone,
   Mail,
 } from "lucide-react";
@@ -37,6 +38,7 @@ const items: { to: string; labelKey: TranslationKey; icon: typeof Home }[] = [
   { to: "/partner-shops", labelKey: "nav.partners", icon: Store },
   { to: "/policies", labelKey: "nav.policies", icon: ScrollText },
   { to: "/gallery", labelKey: "nav.gallery", icon: Images },
+  { to: "/competitions", labelKey: "nav.competitions", icon: Trophy },
 ];
 
 export function AppSidebar() {
