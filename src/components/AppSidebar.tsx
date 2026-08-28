@@ -8,6 +8,7 @@ import {
   Store,
   ScrollText,
   Images,
+  Trophy,
   Phone,
   Mail,
 } from "lucide-react";
