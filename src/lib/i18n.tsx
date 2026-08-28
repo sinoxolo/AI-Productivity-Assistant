@@ -85,6 +85,9 @@ const dict = {
     "policies.sub": "Ukurhoxisa, ukufika emva kwexesha nemirhumo.",
     "gallery.title": "Igalari",
     "gallery.sub": "Iifoto zokwenene zesaluni.",
+    "nav.competitions": "Imicimbi",
+    "competitions.title": "Imicimbi",
+    "competitions.sub": "Ngena kucwangciso lwezipho uze ubone abanye abantu abangeniweyo.",
   },
 } as const;
 
